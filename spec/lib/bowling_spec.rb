@@ -154,6 +154,18 @@ describe "ボウリングのスコア計算" do
         expect(@game.total_score).to eq 38
       end
     end
+    
+    context "全てストライク" do
+      it "270点" do
+        # 第一フレームでストライク
+        10.times { @game.add_score(10) }
+        
+        # 合計を計算
+        @game.calc_score
+        
+        expect(@game.total_score).to eq 270
+      end
+    end
   end
 end
 

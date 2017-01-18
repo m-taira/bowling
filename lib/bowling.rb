@@ -4,8 +4,10 @@ class Bowling
     @total_score = 0
     
     @scores = [] # [ [10], [10], [5, 4], [9, 1], [10], [10], [10], [1, 0] ... ]
-    
+
     @frame_pins = [] 
+
+    @frame_score = []
   end
   
   def add_score(pins)
@@ -17,6 +19,10 @@ class Bowling
     end
   end
   
+  def frame_score(index)
+    @frame_score[index - 1]
+  end
+  
   def total_score
     @total_score
   end
@@ -24,6 +30,7 @@ class Bowling
   def calc_score
     @scores.each.with_index do |score, i|
       @total_score += score.inject(:+) + bonus_point(i)
+      @frame_score << @total_score
     end
   end
   

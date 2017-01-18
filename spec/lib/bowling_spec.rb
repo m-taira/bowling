@@ -61,7 +61,7 @@ describe "ボウリングのスコア計算" do
     end
 
     context "最終フレームでスペアを取った場合" do
-      it "スペアボーナスが加算されないこと" do
+      it "スペアボーナスが加算されること" do
         # 第一フレームで3点, 7点のスペア
         @game.add_score(3)
         @game.add_score(7)
@@ -72,11 +72,14 @@ describe "ボウリングのスコア計算" do
         # 最終フレームで3点, 7点のスペア
         @game.add_score(3)
         @game.add_score(7)
+        
+        @game.add_score(8)
+        @game.add_score(0)
         # 合計を計算
         @game.calc_score
         # 期待する合計　※()内はボーナス点
-        # 3 + 7 + 4 + (4) + 3 + 7 = 28
-        expect(@game.total_score).to eq 28
+        # 3 + 7 + 4 + (4) + 3 + 7 + (8) = 36
+        expect(@game.total_score).to eq 36
       end
     end
     context "ストライクを取った場合" do
@@ -137,7 +140,7 @@ describe "ボウリングのスコア計算" do
     end
 
     context "最終フレームでストライクを取った場合" do
-      it "ストライクボーナスが加算されないこと" do
+      it "ストライクボーナスが加算されること" do
         # 第一フレームでストライク
         @game.add_score(10)
         # 第二フレームで5点, 4点
@@ -147,23 +150,29 @@ describe "ボウリングのスコア計算" do
         add_many_scores(14, 0)
         # 最終フレームでストライク
         @game.add_score(10)
+        
+        # ボーナス用投球2回
+        @game.add_score(5)
+        @game.add_score(4)
+        
         # 合計を計算
         @game.calc_score
         # 期待する合計　※()内はボーナス点
-        # 10 + 5 + (5) + 4 + (4) + 10 = 38
-        expect(@game.total_score).to eq 38
+        # 10 + 5 + (5) + 4 + (4) + 10 + (5) + (4) = 47
+        expect(@game.total_score).to eq 47
       end
     end
     
     context "全てストライク" do
-      it "270点" do
+      it "300点" do
         # 第一フレームでストライク
-        10.times { @game.add_score(10) }
+        12.times { @game.add_score(10) }
+        
         
         # 合計を計算
         @game.calc_score
         
-        expect(@game.total_score).to eq 270
+        expect(@game.total_score).to eq 300
       end
     end
   end

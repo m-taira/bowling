@@ -23,11 +23,25 @@ class Bowling
   
   def calc_score
     @scores.each.with_index do |score, i|
-      if score.inject(:+) == 10 && i < 9
-        @total_score += 10 + @scores[i + 1].first
+      if spare?(score) && not_last_frame?(i)
+        @total_score += 10 + calc_spare_bonus(i)
       else
         @total_score += score.inject(:+)
       end
     end
+  end
+  
+  private
+  
+  def spare?(score)
+    score.inject(:+) == 10
+  end
+  
+  def not_last_frame?(index)
+    index < 9
+  end
+  
+  def calc_spare_bonus(index)
+    @scores[index + 1].first
   end
 end
